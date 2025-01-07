@@ -3,9 +3,14 @@ import { createServer, type Server } from "http";
 import { db } from "@db";
 import { waitlist, insertWaitlistSchema } from "@db/schema";
 import { sendWaitlistConfirmation } from "./utils/email";
+import { setupAuth } from "./auth";
+import { eq } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {
-  // Get all waitlist entries
+  // Set up authentication
+  setupAuth(app);
+
+  // Get all waitlist entries (protected)
   app.get("/api/waitlist", async (_req, res) => {
     try {
       const entries = await db.query.waitlist.findMany({
@@ -18,6 +23,31 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Delete waitlist entry (protected)
+  app.delete("/api/waitlist/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).send("Invalid ID");
+      }
+
+      const [deleted] = await db
+        .delete(waitlist)
+        .where(eq(waitlist.id, id))
+        .returning();
+
+      if (!deleted) {
+        return res.status(404).send("Entry not found");
+      }
+
+      res.json({ message: "Entry deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // Create waitlist entry (public)
   app.post("/api/waitlist", async (req, res) => {
     try {
       const result = insertWaitlistSchema.safeParse(req.body);

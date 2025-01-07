@@ -5,15 +5,13 @@ export default function HeroSection() {
   return (
     <div className="relative overflow-hidden">
       <div 
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 -z-10 bg-gradient-to-br from-green-50 to-green-100"
         style={{
-          backgroundImage: `url(${encodeURI('https://images.unsplash.com/photo-1554998171-89445e31c52b')})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.15
+          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,128,0,0.1) 2px, transparent 0)`,
+          backgroundSize: '24px 24px'
         }}
       />
-      
+
       <div className="container px-4 py-24 md:py-32">
         <div className="max-w-3xl mx-auto text-center">
           <motion.h1 
