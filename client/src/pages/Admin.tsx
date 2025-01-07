@@ -7,11 +7,11 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Trash2, X, Settings2, Eye, EyeOff } from "lucide-react";
+import { Trash2, X, Settings2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
 import { insertUserSchema } from "@db/schema";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import * as z from "zod";
 import { useState } from "react";
 
@@ -82,7 +82,6 @@ export default function Admin() {
       });
       settingsForm.reset();
       setShowSettings(false);
-      // Force logout to require re-authentication with new credentials
       queryClient.setQueryData(["user"], null);
     },
     onError: (error: Error) => {
@@ -151,7 +150,14 @@ export default function Admin() {
     return (
       <div className="container max-w-md py-8">
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center gap-2">
+            <Link href="/">
+              <a className="text-muted-foreground hover:text-primary transition-colors">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </a>
+            </Link>
             <CardTitle>Admin Login</CardTitle>
           </CardHeader>
           <CardContent>
@@ -176,10 +182,10 @@ export default function Admin() {
                     <FormItem>
                       <div className="relative">
                         <FormControl>
-                          <Input 
-                            type={showLoginPassword ? "text" : "password"} 
-                            placeholder="Password" 
-                            {...field} 
+                          <Input
+                            type={showLoginPassword ? "text" : "password"}
+                            placeholder="Password"
+                            {...field}
                           />
                         </FormControl>
                         <Button
@@ -266,10 +272,10 @@ export default function Admin() {
                         <FormItem>
                           <div className="relative">
                             <FormControl>
-                              <Input 
-                                type={showCurrentPassword ? "text" : "password"} 
-                                placeholder="Current Password" 
-                                {...field} 
+                              <Input
+                                type={showCurrentPassword ? "text" : "password"}
+                                placeholder="Current Password"
+                                {...field}
                               />
                             </FormControl>
                             <Button
@@ -309,10 +315,10 @@ export default function Admin() {
                         <FormItem>
                           <div className="relative">
                             <FormControl>
-                              <Input 
-                                type={showNewPassword ? "text" : "password"} 
-                                placeholder="New Password" 
-                                {...field} 
+                              <Input
+                                type={showNewPassword ? "text" : "password"}
+                                placeholder="New Password"
+                                {...field}
                               />
                             </FormControl>
                             <Button
