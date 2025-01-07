@@ -7,10 +7,11 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
 import { insertUserSchema } from "@db/schema";
+import { useLocation } from "wouter";
 import * as z from "zod";
 
 interface WaitlistEntry {
@@ -24,6 +25,7 @@ export default function Admin() {
   const { user, login, isLoading: isAuthLoading } = useUser();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
   const form = useForm<z.infer<typeof insertUserSchema>>({
     resolver: zodResolver(insertUserSchema),
@@ -139,14 +141,24 @@ export default function Admin() {
     <div className="container py-8">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Waitlist Subscribers</CardTitle>
+          <div className="flex items-center gap-4">
+            <CardTitle>Waitlist Subscribers</CardTitle>
+            <Button
+              variant="outline"
+              onClick={() => {
+                queryClient.invalidateQueries({ queryKey: ['/api/waitlist'] });
+              }}
+            >
+              Refresh
+            </Button>
+          </div>
           <Button
-            variant="outline"
-            onClick={() => {
-              queryClient.invalidateQueries({ queryKey: ['/api/waitlist'] });
-            }}
+            variant="ghost"
+            size="icon"
+            onClick={() => setLocation("/")}
+            className="rounded-full"
           >
-            Refresh
+            <X className="h-4 w-4" />
           </Button>
         </CardHeader>
         <CardContent>
