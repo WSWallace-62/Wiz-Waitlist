@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail';
-import { waitlistConfirmationTemplate } from './email-templates/waitlist-confirmation';
-import type { EmailConfig, WaitlistEmailCustomizations } from './types';
+import { waitlistConfirmationTemplate } from './email-templates/waitlist-confirmation.js';
+import type { EmailConfig, WaitlistEmailCustomizations } from './types.js';
 
 let emailEnabled = false;
 
@@ -44,11 +44,15 @@ export async function sendWaitlistConfirmation(
 
   const msg: EmailConfig = {
     to: email,
-    from: 'notifications@plant-based-world.com',
+    from: 'noreply@mg.plant-based-world.com', // Using SendGrid verified domain
     subject: waitlistConfirmationTemplate.subject,
     html: waitlistConfirmationTemplate.generateHTML({
       fullName,
-      customizations
+      customizations: {
+        ...customizations,
+        // Use the verified sender domain for image hosting
+        headerImage: 'https://mg.plant-based-world.com/images/avo-friend.png'
+      }
     })
   };
 
@@ -60,9 +64,14 @@ export async function sendWaitlistConfirmation(
       await sgMail.send(msg);
       console.log(`Confirmation email sent successfully to ${email}`);
       return;
-    } catch (error) {
+    } catch (error: any) {
       attempts++;
-      console.error(`Error sending confirmation email (attempt ${attempts}/${maxAttempts}):`, error);
+      // Enhanced error logging
+      console.error(`Error sending confirmation email (attempt ${attempts}/${maxAttempts}):`, {
+        error: error.toString(),
+        response: error.response?.body,
+        statusCode: error.code,
+      });
 
       if (attempts === maxAttempts) {
         console.error('Max retry attempts reached for sending email');
