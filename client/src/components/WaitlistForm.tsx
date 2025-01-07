@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import * as z from "zod";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ const formSchema = z.object({
 
 export default function WaitlistForm() {
   const { toast } = useToast();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +68,16 @@ export default function WaitlistForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Full Name" {...field} />
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                  >
+                    <Input 
+                      placeholder="Full Name" 
+                      {...field} 
+                      className="transition-all duration-200 hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                  </motion.div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -80,7 +90,17 @@ export default function WaitlistForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Email" type="email" {...field} />
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                  >
+                    <Input 
+                      placeholder="Email" 
+                      type="email" 
+                      {...field} 
+                      className="transition-all duration-200 hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                  </motion.div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,13 +108,19 @@ export default function WaitlistForm() {
           />
         </div>
 
-        <Button 
-          type="submit" 
-          className="w-full sm:w-auto"
-          disabled={mutation.isPending}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          {mutation.isPending ? "Joining..." : "Join Waitlist"}
-        </Button>
+          <Button 
+            type="submit" 
+            className="w-full sm:w-auto transition-colors duration-200"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "Joining..." : "Join Waitlist"}
+          </Button>
+        </motion.div>
       </form>
     </Form>
   );
