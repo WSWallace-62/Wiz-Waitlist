@@ -5,6 +5,19 @@ import { waitlist, insertWaitlistSchema } from "@db/schema";
 import { sendWaitlistConfirmation } from "./utils/email";
 
 export function registerRoutes(app: Express): Server {
+  // Get all waitlist entries
+  app.get("/api/waitlist", async (_req, res) => {
+    try {
+      const entries = await db.query.waitlist.findMany({
+        orderBy: (waitlist, { desc }) => [desc(waitlist.createdAt)],
+      });
+      res.json(entries);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Server error");
+    }
+  });
+
   app.post("/api/waitlist", async (req, res) => {
     try {
       const result = insertWaitlistSchema.safeParse(req.body);
