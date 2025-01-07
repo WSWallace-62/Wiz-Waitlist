@@ -8,6 +8,7 @@ import { promisify } from "util";
 import { users, insertUserSchema } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 const scryptAsync = promisify(scrypt);
 const crypto = {
@@ -34,6 +35,12 @@ declare global {
     interface User extends SelectUser {}
   }
 }
+
+const updateCredentialsSchema = z.object({
+  currentPassword: z.string(),
+  newUsername: z.string().min(3),
+  newPassword: z.string().min(6),
+});
 
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
@@ -145,6 +152,71 @@ export function setupAuth(app: Express) {
     }
 
     res.status(401).send("Not logged in");
+  });
+
+  // Update admin credentials
+  app.put("/api/admin/credentials", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).send("Authentication required");
+    }
+
+    const result = updateCredentialsSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).send(
+        "Invalid input: " + result.error.issues.map((i) => i.message).join(", ")
+      );
+    }
+
+    const { currentPassword, newUsername, newPassword } = result.data;
+
+    try {
+      // Verify current password
+      const isMatch = await crypto.compare(currentPassword, req.user.password);
+      if (!isMatch) {
+        return res.status(400).send("Current password is incorrect");
+      }
+
+      // Check if new username already exists (if username is being changed)
+      if (newUsername !== req.user.username) {
+        const [existingUser] = await db
+          .select()
+          .from(users)
+          .where(eq(users.username, newUsername))
+          .limit(1);
+
+        if (existingUser) {
+          return res.status(400).send("Username already exists");
+        }
+      }
+
+      // Hash new password
+      const hashedPassword = await crypto.hash(newPassword);
+
+      // Update user
+      const [updatedUser] = await db
+        .update(users)
+        .set({
+          username: newUsername,
+          password: hashedPassword,
+        })
+        .where(eq(users.id, req.user.id))
+        .returning();
+
+      // Force logout after credential change
+      req.logout((err) => {
+        if (err) {
+          console.error("Error logging out after credential update:", err);
+        }
+      });
+
+      res.json({
+        message: "Credentials updated successfully",
+        user: { id: updatedUser.id, username: updatedUser.username },
+      });
+    } catch (error) {
+      console.error("Error updating credentials:", error);
+      res.status(500).send("Server error");
+    }
   });
 
   // Protect the waitlist API with authentication

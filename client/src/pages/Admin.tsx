@@ -7,12 +7,13 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Trash2, X } from "lucide-react";
+import { Trash2, X, Settings2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
 import { insertUserSchema } from "@db/schema";
 import { useLocation } from "wouter";
 import * as z from "zod";
+import { useState } from "react";
 
 interface WaitlistEntry {
   id: number;
@@ -21,13 +22,20 @@ interface WaitlistEntry {
   createdAt: string;
 }
 
+const updateCredentialsSchema = z.object({
+  currentPassword: z.string().min(1, "Current password is required"),
+  newUsername: z.string().min(3, "Username must be at least 3 characters"),
+  newPassword: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 export default function Admin() {
   const { user, login, isLoading: isAuthLoading } = useUser();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
+  const [showSettings, setShowSettings] = useState(false);
 
-  const form = useForm<z.infer<typeof insertUserSchema>>({
+  const loginForm = useForm<z.infer<typeof insertUserSchema>>({
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
       username: "",
@@ -35,9 +43,52 @@ export default function Admin() {
     },
   });
 
+  const settingsForm = useForm<z.infer<typeof updateCredentialsSchema>>({
+    resolver: zodResolver(updateCredentialsSchema),
+    defaultValues: {
+      currentPassword: "",
+      newUsername: "",
+      newPassword: "",
+    },
+  });
+
   const { data: waitlist, isLoading: isWaitlistLoading, error } = useQuery<WaitlistEntry[]>({
     queryKey: ['/api/waitlist'],
     enabled: !!user,
+  });
+
+  const updateCredentialsMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof updateCredentialsSchema>) => {
+      const response = await fetch("/api/admin/credentials", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Credentials updated successfully. Please log in again.",
+      });
+      settingsForm.reset();
+      setShowSettings(false);
+      // Force logout to require re-authentication with new credentials
+      queryClient.setQueryData(["user"], null);
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    },
   });
 
   const deleteMutation = useMutation({
@@ -69,7 +120,7 @@ export default function Admin() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof insertUserSchema>) => {
+  const onLoginSubmit = async (values: z.infer<typeof insertUserSchema>) => {
     const result = await login(values);
     if (!result.ok) {
       toast({
@@ -78,6 +129,10 @@ export default function Admin() {
         description: result.message,
       });
     }
+  };
+
+  const onUpdateCredentials = async (values: z.infer<typeof updateCredentialsSchema>) => {
+    updateCredentialsMutation.mutate(values);
   };
 
   if (isAuthLoading) {
@@ -92,10 +147,10 @@ export default function Admin() {
             <CardTitle>Admin Login</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Form {...loginForm}>
+              <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
                 <FormField
-                  control={form.control}
+                  control={loginForm.control}
                   name="username"
                   render={({ field }) => (
                     <FormItem>
@@ -107,7 +162,7 @@ export default function Admin() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={loginForm.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -151,6 +206,13 @@ export default function Admin() {
             >
               Refresh
             </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              <Settings2 className="h-4 w-4 mr-2" />
+              Settings
+            </Button>
           </div>
           <Button
             variant="ghost"
@@ -162,6 +224,63 @@ export default function Admin() {
           </Button>
         </CardHeader>
         <CardContent>
+          {showSettings ? (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle>Update Admin Credentials</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Form {...settingsForm}>
+                  <form onSubmit={settingsForm.handleSubmit(onUpdateCredentials)} className="space-y-4">
+                    <FormField
+                      control={settingsForm.control}
+                      name="currentPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input type="password" placeholder="Current Password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={settingsForm.control}
+                      name="newUsername"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input placeholder="New Username" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={settingsForm.control}
+                      name="newPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input type="password" placeholder="New Password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button type="button" variant="outline" onClick={() => setShowSettings(false)}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" disabled={updateCredentialsMutation.isPending}>
+                        {updateCredentialsMutation.isPending ? "Updating..." : "Update Credentials"}
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          ) : null}
           <ScrollArea className="h-[600px]">
             <div className="space-y-4">
               {waitlist?.map((entry) => (
