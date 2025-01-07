@@ -76,12 +76,12 @@ export function registerRoutes(app: Express): Server {
         })
         .returning();
 
-      // Send confirmation email
+      // Attempt to send confirmation email, but don't block on failure
       try {
         await sendWaitlistConfirmation(email, fullName);
       } catch (emailError) {
         console.error('Failed to send confirmation email:', emailError);
-        // Don't fail the registration if email sending fails
+        // Continue with the signup process even if email fails
       }
 
       res.json({

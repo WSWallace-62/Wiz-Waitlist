@@ -1,12 +1,25 @@
 import sgMail from '@sendgrid/mail';
 
-if (!process.env.SENDGRID_API_KEY) {
-  throw new Error('SENDGRID_API_KEY environment variable is required');
+let emailEnabled = false;
+
+try {
+  if (process.env.SENDGRID_API_KEY) {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    emailEnabled = true;
+  } else {
+    console.log('SENDGRID_API_KEY not set - email notifications disabled');
+  }
+} catch (error) {
+  console.error('Error initializing SendGrid:', error);
+  console.log('Email notifications will be disabled');
 }
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 export async function sendWaitlistConfirmation(email: string, fullName: string) {
+  if (!emailEnabled) {
+    console.log('Email notifications disabled - skipping confirmation email');
+    return;
+  }
+
   const msg = {
     to: email,
     from: 'notifications@plant-based-world.com', // Replace with your verified sender
@@ -31,8 +44,9 @@ export async function sendWaitlistConfirmation(email: string, fullName: string) 
 
   try {
     await sgMail.send(msg);
+    console.log(`Confirmation email sent to ${email}`);
   } catch (error) {
-    console.error('Error sending email:', error);
-    throw new Error('Failed to send confirmation email');
+    console.error('Error sending confirmation email:', error);
+    // Don't throw error - allow the signup process to continue
   }
 }
