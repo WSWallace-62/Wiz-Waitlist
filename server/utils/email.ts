@@ -17,8 +17,12 @@ async function initializeSendGrid(retries = 3) {
         console.log('SENDGRID_API_KEY not set - email notifications disabled');
         return false;
       }
-    } catch (error) {
-      console.error(`Error initializing SendGrid (attempt ${attempt}/${retries}):`, error);
+    } catch (error: any) {
+      console.error(`Error initializing SendGrid (attempt ${attempt}/${retries}):`, {
+        message: error.message,
+        errors: error.response?.body?.errors,
+        code: error.code
+      });
       if (attempt === retries) {
         console.log('Email notifications will be disabled');
         return false;
@@ -44,7 +48,7 @@ export async function sendWaitlistConfirmation(
 
   const msg: EmailConfig = {
     to: email,
-    from: 'veganize.it.app@gmail.com', // TODO: Replace with your verified sender email
+    from: 'admin@plant-based-world.com', // Verified sender email
     subject: waitlistConfirmationTemplate.subject,
     html: waitlistConfirmationTemplate.generateHTML({
       fullName,
@@ -67,9 +71,11 @@ export async function sendWaitlistConfirmation(
       attempts++;
       // Enhanced error logging
       console.error(`Error sending confirmation email (attempt ${attempts}/${maxAttempts}):`, {
-        error: error.toString(),
-        response: error.response?.body,
+        message: error.message,
+        errors: error.response?.body?.errors,
+        code: error.code,
         statusCode: error.code,
+        response: error.response?.body
       });
 
       if (attempts === maxAttempts) {

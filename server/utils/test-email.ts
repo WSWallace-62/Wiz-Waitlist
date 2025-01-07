@@ -9,7 +9,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const msg: EmailConfig = {
   to: 'test@example.com',
-  from: 'veganize.it.app@gmail.com',
+  from: 'admin@plant-based-world.com',
   subject: 'SendGrid Test Email',
   html: '<p>This is a test email from Veganize-iT</p>'
 };
@@ -25,7 +25,7 @@ async function sendTestEmail() {
   } catch (error: any) {
     console.error('SendGrid Error Details:', {
       message: error.message,
-      response: error.response?.body,
+      errors: error.response?.body?.errors,
       code: error.code,
       stack: error.stack
     });

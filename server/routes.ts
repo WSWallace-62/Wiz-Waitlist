@@ -68,6 +68,7 @@ export function registerRoutes(app: Express): Server {
         return res.status(400).send("Email already registered");
       }
 
+      // Create waitlist entry
       const [newSignup] = await db
         .insert(waitlist)
         .values({
@@ -76,17 +77,30 @@ export function registerRoutes(app: Express): Server {
         })
         .returning();
 
-      // Attempt to send confirmation email, but don't block on failure
+      // Attempt to send confirmation email, with enhanced error handling
+      let emailError = null;
       try {
         await sendWaitlistConfirmation(email, fullName);
-      } catch (emailError) {
+        console.log(`Confirmation email sent successfully to ${email}`);
+      } catch (error: any) {
+        emailError = {
+          message: error.message,
+          code: error.code,
+          details: error.response?.body?.errors?.[0]?.message || 'Unknown error'
+        };
         console.error('Failed to send confirmation email:', emailError);
-        // Continue with the signup process even if email fails
       }
 
+      // Return success response with email status
       res.json({
         message: "Successfully joined waitlist",
         signup: newSignup,
+        emailStatus: emailError ? {
+          sent: false,
+          error: emailError.details
+        } : {
+          sent: true
+        }
       });
     } catch (error) {
       console.error(error);
