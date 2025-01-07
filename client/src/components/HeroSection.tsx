@@ -12,7 +12,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="container px-4 py-16 md:py-24 lg:py-32">
+      <div className="container px-4 py-8 md:py-24 lg:py-32">
         <div className="max-w-3xl mx-auto text-center">
           <motion.p
             className="text-xl sm:text-2xl font-semibold text-primary mb-4"

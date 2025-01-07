@@ -39,15 +39,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      
-      <Separator className="my-12" />
-      
-      <section className="container px-4 py-16">
+
+      <Separator className="my-6 md:my-12" />
+
+      <section className="container px-4 py-8 md:py-16">
         <h2 className="text-3xl font-bold text-center mb-4">Transform Your Cooking</h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-center mb-8 md:mb-12 max-w-2xl mx-auto">
           Veganize-iT makes it easy to convert any recipe into a delicious plant-based version while maintaining the flavors you love.
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <FeatureCard 
@@ -60,7 +60,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-muted py-12 mt-20">
+      <footer className="bg-muted py-6 md:py-12 mt-10 md:mt-20">
         <div className="container px-4">
           <p className="text-center text-muted-foreground">
             © 2024 Plant-Based-World.com. All rights reserved.
