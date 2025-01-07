@@ -14,7 +14,7 @@ const formSchema = z.object({
 
 export default function WaitlistForm() {
   const { toast } = useToast();
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,7 +90,7 @@ export default function WaitlistForm() {
 
         <Button 
           type="submit" 
-          className="w-full sm:w-auto text-red-500"
+          className="w-full sm:w-auto"
           disabled={mutation.isPending}
         >
           {mutation.isPending ? "Joining..." : "Join Waitlist"}
