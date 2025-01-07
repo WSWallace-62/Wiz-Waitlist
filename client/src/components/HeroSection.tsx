@@ -14,6 +14,15 @@ export default function HeroSection() {
 
       <div className="container px-4 py-16 md:py-24 lg:py-32">
         <div className="max-w-3xl mx-auto text-center">
+          <motion.p
+            className="text-xl sm:text-2xl font-semibold text-primary mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Coming Soon
+          </motion.p>
+
           <motion.h1 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
             initial={{ opacity: 0, y: 20 }}
