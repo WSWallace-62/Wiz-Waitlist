@@ -40,7 +40,7 @@ export default function CopyUrlButton() {
       ) : (
         <>
           <Copy className="h-4 w-4" />
-          Copy URL
+          Copy & Share URL
         </>
       )}
     </Button>
