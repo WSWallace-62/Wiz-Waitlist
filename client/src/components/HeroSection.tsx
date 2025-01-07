@@ -31,7 +31,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Join the waitlist for Veganize-iT, the smart recipe converter that makes plant-based cooking easy, 
+            <span className="text-red-600">Join the waitlist</span> for Veganize-iT, the smart recipe converter that makes plant-based cooking easy, 
             delicious, and perfectly tailored to your preferences.
           </motion.p>
 
