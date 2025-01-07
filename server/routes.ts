@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
 import { waitlist, insertWaitlistSchema } from "@db/schema";
+import { sendWaitlistConfirmation } from "./utils/email";
 
 export function registerRoutes(app: Express): Server {
   app.post("/api/waitlist", async (req, res) => {
@@ -31,6 +32,14 @@ export function registerRoutes(app: Express): Server {
           email,
         })
         .returning();
+
+      // Send confirmation email
+      try {
+        await sendWaitlistConfirmation(email, fullName);
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't fail the registration if email sending fails
+      }
 
       res.json({
         message: "Successfully joined waitlist",
