@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import CopyUrlButton from "./CopyUrlButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,13 +13,16 @@ export default function Layout({ children }: LayoutProps) {
           <Link href="/">
             <a className="text-xl font-bold text-primary">Veganize-iT</a>
           </Link>
-          <nav>
-            <Link href="/admin">
-              <a className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Admin Dashboard
-              </a>
-            </Link>
-          </nav>
+          <div className="flex items-center gap-4">
+            <CopyUrlButton />
+            <nav>
+              <Link href="/admin">
+                <a className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Admin Dashboard
+                </a>
+              </Link>
+            </nav>
+          </div>
         </div>
       </header>
       {children}
