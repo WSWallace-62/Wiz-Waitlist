@@ -2,11 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import * as z from "zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from "./LoadingSpinner";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -108,19 +109,32 @@ export default function WaitlistForm() {
           />
         </div>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
-          <Button 
-            type="submit" 
-            className="w-full sm:w-auto transition-colors duration-200"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? "Joining..." : "Join Waitlist"}
-          </Button>
-        </motion.div>
+        <AnimatePresence mode="wait">
+          {mutation.isPending ? (
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              className="flex justify-center"
+            >
+              <LoadingSpinner />
+            </motion.div>
+          ) : (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Button 
+                type="submit" 
+                className="w-full sm:w-auto transition-colors duration-200"
+                disabled={mutation.isPending}
+              >
+                Join Waitlist
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </form>
     </Form>
   );
