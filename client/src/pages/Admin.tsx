@@ -226,35 +226,41 @@ export default function Admin() {
   }
 
   return (
-    <div className="container py-8">
+    <div className="container py-4 sm:py-8">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-4">
-            <CardTitle>Waitlist Subscribers</CardTitle>
+        <CardHeader className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+              <CardTitle>Waitlist Subscribers</CardTitle>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  className="flex-1 sm:flex-none"
+                  onClick={() => {
+                    queryClient.invalidateQueries({ queryKey: ['/api/waitlist'] });
+                  }}
+                >
+                  Refresh
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 sm:flex-none"
+                  onClick={() => setShowSettings(!showSettings)}
+                >
+                  <Settings2 className="h-4 w-4 mr-2" />
+                  Settings
+                </Button>
+              </div>
+            </div>
             <Button
-              variant="outline"
-              onClick={() => {
-                queryClient.invalidateQueries({ queryKey: ['/api/waitlist'] });
-              }}
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              className="rounded-full"
             >
-              Refresh
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowSettings(!showSettings)}
-            >
-              <Settings2 className="h-4 w-4 mr-2" />
-              Settings
+              <X className="h-4 w-4" />
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleClose}
-            className="rounded-full"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </CardHeader>
         <CardContent>
           {showSettings ? (

@@ -12,21 +12,21 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="container px-4 py-24 md:py-32">
+      <div className="container px-4 py-16 md:py-24 lg:py-32">
         <div className="max-w-3xl mx-auto text-center">
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             Transform Any Recipe Into a 
-            <span className="text-primary"> Plant-Based </span>
+            <span className="text-primary block sm:inline"> Plant-Based </span>
             Delight
           </motion.h1>
 
           <motion.p 
-            className="mt-6 text-lg text-muted-foreground"
+            className="mt-4 sm:mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -36,7 +36,7 @@ export default function HeroSection() {
           </motion.p>
 
           <motion.div 
-            className="mt-12"
+            className="mt-8 sm:mt-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
