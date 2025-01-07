@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Trash2, X, Settings2 } from "lucide-react";
+import { Trash2, X, Settings2, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
 import { insertUserSchema } from "@db/schema";
@@ -34,6 +34,9 @@ export default function Admin() {
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
   const [showSettings, setShowSettings] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   const loginForm = useForm<z.infer<typeof insertUserSchema>>({
     resolver: zodResolver(insertUserSchema),
@@ -171,9 +174,28 @@ export default function Admin() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl>
-                        <Input type="password" placeholder="Password" {...field} />
-                      </FormControl>
+                      <div className="relative">
+                        <FormControl>
+                          <Input 
+                            type={showLoginPassword ? "text" : "password"} 
+                            placeholder="Password" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
+                        >
+                          {showLoginPassword ? (
+                            <EyeOff className="h-4 w-4 text-gray-500" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-gray-500" />
+                          )}
+                        </Button>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -242,9 +264,28 @@ export default function Admin() {
                       name="currentPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormControl>
-                            <Input type="password" placeholder="Current Password" {...field} />
-                          </FormControl>
+                          <div className="relative">
+                            <FormControl>
+                              <Input 
+                                type={showCurrentPassword ? "text" : "password"} 
+                                placeholder="Current Password" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                              onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                            >
+                              {showCurrentPassword ? (
+                                <EyeOff className="h-4 w-4 text-gray-500" />
+                              ) : (
+                                <Eye className="h-4 w-4 text-gray-500" />
+                              )}
+                            </Button>
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -266,9 +307,28 @@ export default function Admin() {
                       name="newPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormControl>
-                            <Input type="password" placeholder="New Password" {...field} />
-                          </FormControl>
+                          <div className="relative">
+                            <FormControl>
+                              <Input 
+                                type={showNewPassword ? "text" : "password"} 
+                                placeholder="New Password" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                              onClick={() => setShowNewPassword(!showNewPassword)}
+                            >
+                              {showNewPassword ? (
+                                <EyeOff className="h-4 w-4 text-gray-500" />
+                              ) : (
+                                <Eye className="h-4 w-4 text-gray-500" />
+                              )}
+                            </Button>
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
