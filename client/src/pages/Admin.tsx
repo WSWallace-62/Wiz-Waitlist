@@ -29,7 +29,7 @@ const updateCredentialsSchema = z.object({
 });
 
 export default function Admin() {
-  const { user, login, isLoading: isAuthLoading } = useUser();
+  const { user, login, logout, isLoading: isAuthLoading } = useUser();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
@@ -135,6 +135,11 @@ export default function Admin() {
     updateCredentialsMutation.mutate(values);
   };
 
+  const handleClose = async () => {
+    await logout();
+    setLocation("/");
+  };
+
   if (isAuthLoading) {
     return <div className="p-8">Loading...</div>;
   }
@@ -217,7 +222,7 @@ export default function Admin() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setLocation("/")}
+            onClick={handleClose}
             className="rounded-full"
           >
             <X className="h-4 w-4" />
