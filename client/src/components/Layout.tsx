@@ -25,7 +25,7 @@ export default function Layout({ children }: LayoutProps) {
             <nav>
               <Link href="/admin">
                 <a className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Admin Dashboard
+                  Admin
                 </a>
               </Link>
             </nav>
