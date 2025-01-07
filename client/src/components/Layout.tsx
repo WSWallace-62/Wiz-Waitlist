@@ -11,7 +11,14 @@ export default function Layout({ children }: LayoutProps) {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <Link href="/">
-            <a className="text-xl font-bold text-primary">Veganize-iT</a>
+            <a className="flex items-center gap-2">
+              <img 
+                src="/avo-friend.png" 
+                alt="Veganize-iT Mascot" 
+                className="w-8 h-8 object-contain"
+              />
+              <span className="text-xl font-bold text-primary">Veganize-iT</span>
+            </a>
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
             <CopyUrlButton />
