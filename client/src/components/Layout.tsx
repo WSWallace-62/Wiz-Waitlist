@@ -17,7 +17,11 @@ export default function Layout({ children }: LayoutProps) {
                 alt="Veganize-iT Mascot" 
                 className="w-8 h-8 object-contain"
               />
-              <span className="text-xl font-bold text-primary">Veganize-iT</span>
+              <img 
+                src="/logo-beta.png" 
+                alt="Veganize-iT Logo" 
+                className="h-6 object-contain"
+              />
             </a>
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
