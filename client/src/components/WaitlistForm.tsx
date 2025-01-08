@@ -39,10 +39,14 @@ export default function WaitlistForm() {
 
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      const emailStatus = data.emailStatus?.sent
+        ? "You'll receive a confirmation email shortly."
+        : "You've been added to the waitlist! Email notifications are temporarily disabled.";
+
       toast({
         title: "Success!",
-        description: "You've been added to the waitlist. We'll notify you when we launch!",
+        description: `${emailStatus} We'll notify you when we launch!`,
       });
       form.reset();
     },

@@ -10,8 +10,9 @@ async function initializeSendGrid(retries = 3) {
     try {
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        emailEnabled = true;
-        console.log('SendGrid initialized successfully');
+        // Temporarily disable email sending until sender verification is complete
+        emailEnabled = false;
+        console.log('SendGrid initialized but emails disabled pending sender verification');
         return true;
       } else {
         console.log('SENDGRID_API_KEY not set - email notifications disabled');
@@ -42,7 +43,7 @@ export async function sendWaitlistConfirmation(
   customizations?: WaitlistEmailCustomizations
 ) {
   if (!emailEnabled) {
-    console.log(`Email notifications disabled - skipping confirmation email to ${email}`);
+    console.log(`Email notifications disabled - skipping confirmation email to ${email}. Please verify sender identity in SendGrid.`);
     return;
   }
 
