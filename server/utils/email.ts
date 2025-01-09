@@ -10,9 +10,8 @@ async function initializeSendGrid(retries = 3) {
     try {
       if (process.env.SENDGRID_API_KEY) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        // Temporarily disable email sending until sender verification is complete
-        emailEnabled = false;
-        console.log('SendGrid initialized but emails disabled pending sender verification');
+        emailEnabled = true;
+        console.log('SendGrid initialized successfully');
         return true;
       } else {
         console.log('SENDGRID_API_KEY not set - email notifications disabled');
@@ -43,19 +42,22 @@ export async function sendWaitlistConfirmation(
   customizations?: WaitlistEmailCustomizations
 ) {
   if (!emailEnabled) {
-    console.log(`Email notifications disabled - skipping confirmation email to ${email}. Please verify sender identity in SendGrid.`);
+    console.log(`Email notifications disabled - skipping confirmation email to ${email}`);
     return;
   }
 
   const msg: EmailConfig = {
     to: email,
-    from: 'admin@plant-based-world.com', // Verified sender email
+    from: {
+      email: 'admin@plant-based-world.com',
+      name: 'Veganize-iT'
+    },
     subject: waitlistConfirmationTemplate.subject,
     html: waitlistConfirmationTemplate.generateHTML({
       fullName,
       customizations: {
         ...customizations,
-        headerImage: '/avo-friend.png' // Using relative path for now
+        headerImage: '/avo-friend.png'
       }
     })
   };
@@ -70,7 +72,6 @@ export async function sendWaitlistConfirmation(
       return;
     } catch (error: any) {
       attempts++;
-      // Enhanced error logging
       console.error(`Error sending confirmation email (attempt ${attempts}/${maxAttempts}):`, {
         message: error.message,
         errors: error.response?.body?.errors,
@@ -80,8 +81,7 @@ export async function sendWaitlistConfirmation(
       });
 
       if (attempts === maxAttempts) {
-        console.error('Max retry attempts reached for sending email');
-        return;
+        throw error;
       }
 
       await new Promise(resolve => setTimeout(resolve, Math.min(1000 * Math.pow(2, attempts), 10000)));

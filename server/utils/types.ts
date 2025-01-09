@@ -5,7 +5,10 @@ export interface EmailTemplate {
 
 export interface EmailConfig {
   to: string;
-  from: string;
+  from: {
+    email: string;
+    name: string;
+  };
   subject: string;
   html: string;
 }

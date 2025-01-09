@@ -1,3 +1,5 @@
+// Keeping this file for reference in case we need to switch back to Twilio
+/*
 import twilio from 'twilio';
 import type { EmailConfig, WaitlistEmailCustomizations } from './types';
 import { waitlistConfirmationTemplate } from './email-templates/waitlist-confirmation';
@@ -78,7 +80,7 @@ export async function sendWaitlistConfirmation(
             }
           }
         });
-      
+
       console.log(`Confirmation email sent successfully to ${email}`);
       return;
     } catch (error: any) {
@@ -97,3 +99,4 @@ export async function sendWaitlistConfirmation(
     }
   }
 }
+*/

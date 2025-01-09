@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
 import { waitlist, insertWaitlistSchema } from "@db/schema";
-import { sendWaitlistConfirmation } from "./utils/twilio-email";
+import { sendWaitlistConfirmation } from "./utils/email";
 import { setupAuth } from "./auth";
 import { eq } from "drizzle-orm";
 
@@ -86,7 +86,7 @@ export function registerRoutes(app: Express): Server {
         emailError = {
           message: error.message,
           code: error.code,
-          details: error.response?.message || 'Unknown error'
+          details: error.response?.body?.errors?.[0]?.message || 'Unknown error'
         };
         console.error('Failed to send confirmation email:', emailError);
       }
