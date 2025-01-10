@@ -46,6 +46,10 @@ export async function sendWaitlistConfirmation(
     return;
   }
 
+  // Get the public URL for the application
+  const publicUrl = process.env.PUBLIC_URL || `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`;
+  console.log('Using public URL for email images:', publicUrl);
+
   const msg: EmailConfig = {
     to: email,
     from: {
@@ -57,7 +61,7 @@ export async function sendWaitlistConfirmation(
       fullName,
       customizations: {
         ...customizations,
-        headerImage: `${process.env.PUBLIC_URL || 'https://your-domain.repl.co'}/avo-friend.png`
+        headerImage: `${publicUrl}/avo-friend.png`
       }
     })
   };
@@ -68,7 +72,7 @@ export async function sendWaitlistConfirmation(
   while (attempts < maxAttempts) {
     try {
       await sgMail.send(msg);
-      console.log(`Confirmation email sent successfully to ${email}`);
+      console.log(`Confirmation email sent successfully to ${email} with image URL: ${publicUrl}/avo-friend.png`);
       return;
     } catch (error: any) {
       attempts++;
