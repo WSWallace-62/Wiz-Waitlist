@@ -57,7 +57,7 @@ export async function sendWaitlistConfirmation(
       fullName,
       customizations: {
         ...customizations,
-        headerImage: '/avo-friend.png'
+        headerImage: `${process.env.PUBLIC_URL || 'https://your-domain.repl.co'}/avo-friend.png`
       }
     })
   };
