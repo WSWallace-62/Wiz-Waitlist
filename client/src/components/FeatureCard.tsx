@@ -7,10 +7,10 @@ interface FeatureCardProps {
   title: string;
   description: string;
   icon: string;
-  imageUrl?: string;
+  images?: string[];
 }
 
-export default function FeatureCard({ title, description, icon, imageUrl }: FeatureCardProps) {
+export default function FeatureCard({ title, description, icon, images }: FeatureCardProps) {
   const [showImage, setShowImage] = useState(false);
   const descriptionLines = description.split('\n').filter(line => line.trim());
 
@@ -24,7 +24,7 @@ export default function FeatureCard({ title, description, icon, imageUrl }: Feat
       >
         <Card 
           className="h-full transition-transform hover:scale-105 cursor-pointer" 
-          onClick={() => imageUrl && setShowImage(true)}
+          onClick={() => images?.length && setShowImage(true)}
         >
           <CardHeader>
             <div className="flex items-center gap-3">
@@ -45,15 +45,17 @@ export default function FeatureCard({ title, description, icon, imageUrl }: Feat
       </motion.div>
 
       <Dialog open={showImage} onOpenChange={setShowImage}>
-        <DialogContent className="max-w-3xl">
-          <div className="aspect-video relative">
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={`${title} feature preview`}
-                className="w-full h-full object-contain"
-              />
-            )}
+        <DialogContent className="max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {images?.map((image, index) => (
+              <div key={index} className="aspect-video relative">
+                <img
+                  src={image}
+                  alt={`${title} feature preview ${index + 1}`}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ))}
           </div>
         </DialogContent>
       </Dialog>

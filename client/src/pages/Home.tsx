@@ -8,37 +8,37 @@ export default function Home() {
       title: "Recipe Conversion",
       description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
       icon: "🥗",
-      imageUrl: "/recipe-wizard.png" 
+      images: ["/recipe-wizard.png", "/recipe-conversion.png"]
     },
     {
       title: "Dietary Preferences",
       description: "Customize recipes based on allergies, restrictions, and preferences like keto or low-sodium.",
       icon: "🍽️",
-      imageUrl: "/features/dietary-preferences.png" 
+      images: ["/features/dietary-preferences.png"]
     },
     {
       title: "Unit Flexibility",
       description: "Switch between metric and imperial measurements seamlessly for temperature, weight, and volume.",
       icon: "⚖️",
-      imageUrl: "/features/unit-flexibility.png" 
+      images: ["/features/unit-flexibility.png"]
     },
     {
       title: "Smart Appliance Integration",
       description: "Adapt recipes to work with the cooking appliances you have at home.",
       icon: "🔧",
-      imageUrl: "/features/smart-appliance.png" 
+      images: ["/features/smart-appliance.png"]
     },
     {
       title: "Nutrition Tracking",
       description: "Monitor nutritional content and adjust recipes to meet your health goals.",
       icon: "📊",
-      imageUrl: "/features/nutrition-tracking.png" 
+      images: ["/features/nutrition-tracking.png"]
     },
     {
       title: "Personalized Experience",
       description: "Get recommendations based on your cooking style and dietary preferences.",
       icon: "👤",
-      imageUrl: "/features/personalized-experience.png" 
+      images: ["/features/personalized-experience.png"]
     }
   ];
 
@@ -61,7 +61,7 @@ export default function Home() {
               title={feature.title}
               description={feature.description}
               icon={feature.icon}
-              imageUrl={feature.imageUrl}
+              images={feature.images}
             />
           ))}
         </div>
