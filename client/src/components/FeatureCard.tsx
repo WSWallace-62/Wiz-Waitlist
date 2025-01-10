@@ -127,15 +127,6 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             />
           </div>
 
-          {/* Custom close button */}
-          <Button
-            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent bg-red-500 text-white z-50"
-            variant="secondary"
-            onClick={() => handleOpenChange(false)}
-          >
-            <X className="h-6 w-6" />
-          </Button>
-
           {/* Thumbnails strip */}
           <div className="flex justify-center gap-2 mb-2 p-1 bg-muted rounded-lg max-w-[240px] mx-auto">
             {images?.map((image, index) => (
@@ -154,6 +145,16 @@ export default function FeatureCard({ title, description, icon, images }: Featur
                 />
               </div>
             ))}
+          </div>
+
+          {/* Close button moved between thumbnails and main image */}
+          <div className="flex justify-center mb-4">
+            <Button
+              className="h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
+              onClick={() => handleOpenChange(false)}
+            >
+              <X className="h-6 w-6" />
+            </Button>
           </div>
 
           <div className="flex gap-4">
