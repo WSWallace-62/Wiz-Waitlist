@@ -6,7 +6,7 @@ export default function Home() {
   const features = [
     {
       title: "Recipe Conversion",
-      description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using an image of your favourite family recipe, typing in the kind if recipe that you are interested in or using an example recipe.",
+      description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using:\n1. An image of your favourite family recipe.\n2. Typing in the kind if recipe that you are interested in.\n3. Using a built in example recipe.",
       icon: "🥗"
     },
     {
