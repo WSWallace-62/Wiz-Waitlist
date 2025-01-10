@@ -28,6 +28,11 @@ export default function FeatureCard({ title, description, icon, images }: Featur
     }
   };
 
+  const resetZoom = () => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  };
+
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scale <= 1) return; // Only allow dragging when zoomed in
     e.preventDefault(); // Prevent image dragging behavior
@@ -59,7 +64,6 @@ export default function FeatureCard({ title, description, icon, images }: Featur
     dragRef.current.isDragging = false;
   };
 
-  // Clean up drag state when mouse leaves the window
   const handleMouseLeave = () => {
     dragRef.current.isDragging = false;
   };
@@ -160,13 +164,22 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               >
                 <ZoomOut className="h-4 w-4" />
               </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={resetZoom}
+                disabled={scale === 1 && position.x === 0 && position.y === 0}
+              >
+                <span className="text-xs">1:1</span>
+              </Button>
             </div>
 
             {/* Full-size image */}
             <div 
-              className="flex-1 aspect-video relative overflow-hidden"
+              className="flex-1 relative overflow-hidden"
               style={{
-                cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
+                cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default',
+                aspectRatio: '3/4'
               }}
             >
               <div
