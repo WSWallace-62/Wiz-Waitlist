@@ -8,7 +8,7 @@ export default function Home() {
       title: "Recipe Conversion",
       description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
       icon: "🥗",
-      imageUrl: "/features/recipe-conversion.png" 
+      imageUrl: "/recipe-wizard.png" 
     },
     {
       title: "Dietary Preferences",
