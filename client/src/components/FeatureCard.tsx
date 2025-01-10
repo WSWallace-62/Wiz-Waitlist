@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, X } from "lucide-react";
+import { ZoomIn, ZoomOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 
@@ -24,7 +24,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
     const newScale = Math.min(Math.max(0.5, scale + delta), 2);
     setScale(newScale);
     if (newScale <= 1) {
-      setPosition({ x: 0, y: 0 }); 
+      setPosition({ x: 0, y: 0 });
     }
   };
 
@@ -34,8 +34,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (scale <= 1) return; 
-    e.preventDefault(); 
+    if (scale <= 1) return;
+    e.preventDefault();
     dragRef.current = {
       isDragging: true,
       startX: e.clientX,
@@ -113,7 +113,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
         <DialogContent
-          className="max-w-2xl [&>button]:hidden" 
+          className="max-w-2xl [&>button]:hidden"
         >
           <div className="absolute left-4 top-4 z-50">
             <img
@@ -144,10 +144,10 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             </div>
 
             <Button
-              className="h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
+              className="px-4 h-8 rounded-md bg-red-500 hover:bg-red-600 text-white"
               onClick={() => handleOpenChange(false)}
             >
-              <X className="h-6 w-6" />
+              Close
             </Button>
           </div>
 
@@ -184,7 +184,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               style={{
                 cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default',
                 aspectRatio: '3/4',
-                maxHeight: 'calc(80vh - 140px)' 
+                maxHeight: 'calc(80vh - 140px)'
               }}
             >
               <div
