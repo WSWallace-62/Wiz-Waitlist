@@ -127,28 +127,26 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             />
           </div>
 
-          {/* Thumbnails strip */}
-          <div className="flex justify-center gap-2 mb-2 p-1 bg-muted rounded-lg max-w-[240px] mx-auto">
-            {images?.map((image, index) => (
-              <div
-                key={index}
-                onClick={() => handleThumbnailClick(index)}
-                className={`
-                  w-12 h-12 rounded-md overflow-hidden cursor-pointer transition-all
-                  ${currentImageIndex === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100'}
-                `}
-              >
-                <img
-                  src={image}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Close button moved between thumbnails and main image */}
-          <div className="flex justify-center mb-4">
+          {/* Thumbnails strip and close button */}
+          <div className="flex justify-center gap-2 mb-4">
+            <div className="flex gap-2 p-1 bg-muted rounded-lg max-w-[240px]">
+              {images?.map((image, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleThumbnailClick(index)}
+                  className={`
+                    w-12 h-12 rounded-md overflow-hidden cursor-pointer transition-all
+                    ${currentImageIndex === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100'}
+                  `}
+                >
+                  <img
+                    src={image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
             <Button
               className="h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
               onClick={() => handleOpenChange(false)}
