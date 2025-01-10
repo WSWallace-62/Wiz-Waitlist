@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut } from "lucide-react";
+import { ZoomIn, ZoomOut, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 
@@ -111,7 +111,16 @@ export default function FeatureCard({ title, description, icon, images }: Featur
       </motion.div>
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-2xl">
+          {/* Close button */}
+          <Button 
+            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent"
+            variant="ghost"
+            onClick={() => handleOpenChange(false)}
+          >
+            <X className="h-6 w-6" />
+          </Button>
+
           {/* Thumbnails strip */}
           <div className="flex justify-center gap-2 mb-4 p-2 bg-muted rounded-lg">
             {images?.map((image, index) => (
@@ -119,7 +128,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
                 key={index}
                 onClick={() => handleThumbnailClick(index)}
                 className={`
-                  w-16 h-16 rounded-md overflow-hidden cursor-pointer transition-all
+                  w-12 h-12 rounded-md overflow-hidden cursor-pointer transition-all
                   ${currentImageIndex === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100'}
                 `}
               >
@@ -132,52 +141,54 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             ))}
           </div>
 
-          {/* Zoom controls */}
-          <div className="flex justify-end gap-2 mb-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleZoom(-0.1)}
-              disabled={scale <= 0.5}
-            >
-              <ZoomOut className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleZoom(0.1)}
-              disabled={scale >= 2}
-            >
-              <ZoomIn className="h-4 w-4" />
-            </Button>
-          </div>
+          <div className="flex gap-4">
+            {/* Zoom controls */}
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleZoom(0.1)}
+                disabled={scale >= 2}
+              >
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleZoom(-0.1)}
+                disabled={scale <= 0.5}
+              >
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+            </div>
 
-          {/* Full-size image */}
-          <div 
-            className="aspect-video relative overflow-hidden"
-            style={{
-              cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
-            }}
-          >
-            <div
+            {/* Full-size image */}
+            <div 
+              className="flex-1 aspect-video relative overflow-hidden"
               style={{
-                transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-                transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
+                cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
               }}
-              className="w-full h-full"
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
             >
-              {images && (
-                <img
-                  src={images[currentImageIndex]}
-                  alt={`${title} feature preview ${currentImageIndex + 1}`}
-                  className="w-full h-full object-contain"
-                  draggable={false}
-                />
-              )}
+              <div
+                style={{
+                  transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+                  transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
+                }}
+                className="w-full h-full"
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+              >
+                {images && (
+                  <img
+                    src={images[currentImageIndex]}
+                    alt={`${title} feature preview ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain"
+                    draggable={false}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </DialogContent>
