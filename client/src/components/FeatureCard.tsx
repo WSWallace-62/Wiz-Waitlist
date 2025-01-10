@@ -92,8 +92,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <Card 
-          className="h-full transition-transform hover:scale-105 cursor-pointer" 
+        <Card
+          className="h-full transition-transform hover:scale-105 cursor-pointer"
           onClick={() => images?.length && setShowImage(true)}
         >
           <CardHeader>
@@ -115,22 +115,22 @@ export default function FeatureCard({ title, description, icon, images }: Featur
       </motion.div>
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
-        <DialogContent 
+        <DialogContent
           className="max-w-2xl [&>button]:hidden" // Hide the default close button
         >
           {/* Logo in top left */}
           <div className="absolute left-4 top-4">
-            <img 
-              src="/avo-friend.png" 
-              alt="Veganize-iT Logo" 
+            <img
+              src="/avo-friend.png"
+              alt="Veganize-iT Logo"
               className="h-8 w-8"
             />
           </div>
 
           {/* Custom close button */}
-          <Button 
-            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent"
-            variant="ghost"
+          <Button
+            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent bg-red-500 text-white"
+            variant="secondary"
             onClick={() => handleOpenChange(false)}
           >
             <X className="h-6 w-6" />
@@ -186,7 +186,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             </div>
 
             {/* Full-size image */}
-            <div 
+            <div
               className="flex-1 relative overflow-hidden"
               style={{
                 cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default',
