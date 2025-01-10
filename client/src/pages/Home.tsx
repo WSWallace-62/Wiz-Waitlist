@@ -6,32 +6,32 @@ export default function Home() {
   const features = [
     {
       title: "Recipe Conversion",
-      description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions",
+      description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using an image of your favourite family recipe, typing in the kind if recipe that you are interested in or using an example recipe.",
       icon: "🥗"
     },
     {
       title: "Dietary Preferences",
-      description: "Customize recipes based on allergies, restrictions, and preferences like keto or low-sodium",
+      description: "Customize recipes based on allergies, restrictions, and preferences like keto or low-sodium.",
       icon: "🍽️"
     },
     {
       title: "Unit Flexibility",
-      description: "Switch between metric and imperial measurements seamlessly for temperature, weight, and volume",
+      description: "Switch between metric and imperial measurements seamlessly for temperature, weight, and volume.",
       icon: "⚖️"
     },
     {
       title: "Smart Appliance Integration",
-      description: "Adapt recipes to work with the cooking appliances you have at home",
+      description: "Adapt recipes to work with the cooking appliances you have at home.",
       icon: "🔧"
     },
     {
       title: "Nutrition Tracking",
-      description: "Monitor nutritional content and adjust recipes to meet your health goals",
+      description: "Monitor nutritional content and adjust recipes to meet your health goals.",
       icon: "📊"
     },
     {
       title: "Personalized Experience",
-      description: "Get recommendations based on your cooking style and dietary preferences",
+      description: "Get recommendations based on your cooking style and dietary preferences.",
       icon: "👤"
     }
   ];

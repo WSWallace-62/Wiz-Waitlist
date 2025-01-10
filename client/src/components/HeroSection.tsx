@@ -21,7 +21,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Testing Edit
+            Coming Soon
           </motion.p>
 
           <motion.h1 
