@@ -1,5 +1,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ZoomIn, ZoomOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -12,7 +14,12 @@ interface FeatureCardProps {
 
 export default function FeatureCard({ title, description, icon, images }: FeatureCardProps) {
   const [showImage, setShowImage] = useState(false);
+  const [scale, setScale] = useState(1);
   const descriptionLines = description.split('\n').filter(line => line.trim());
+
+  const handleZoom = (delta: number) => {
+    setScale(prev => Math.min(Math.max(0.5, prev + delta), 2));
+  };
 
   return (
     <>
@@ -46,14 +53,43 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
       <Dialog open={showImage} onOpenChange={setShowImage}>
         <DialogContent className="max-w-4xl">
+          <div className="flex justify-end gap-2 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleZoom(-0.1)}
+              disabled={scale <= 0.5}
+            >
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleZoom(0.1)}
+              disabled={scale >= 2}
+            >
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {images?.map((image, index) => (
-              <div key={index} className="aspect-video relative">
-                <img
-                  src={image}
-                  alt={`${title} feature preview ${index + 1}`}
-                  className="w-full h-full object-contain"
-                />
+              <div 
+                key={index} 
+                className="aspect-video relative overflow-hidden"
+              >
+                <div
+                  style={{
+                    transform: `scale(${scale})`,
+                    transition: 'transform 0.2s ease-out',
+                  }}
+                  className="w-full h-full"
+                >
+                  <img
+                    src={image}
+                    alt={`${title} feature preview ${index + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             ))}
           </div>
