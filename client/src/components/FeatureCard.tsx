@@ -119,7 +119,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
           className="max-w-2xl [&>button]:hidden" // Hide the default close button
         >
           {/* Logo in top left */}
-          <div className="absolute left-4 top-4">
+          <div className="absolute left-4 top-4 z-50">
             <img
               src="/avo-friend.png"
               alt="Veganize-iT Logo"
@@ -129,7 +129,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
           {/* Custom close button */}
           <Button
-            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent bg-red-500 text-white"
+            className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent bg-red-500 text-white z-50"
             variant="secondary"
             onClick={() => handleOpenChange(false)}
           >
