@@ -35,7 +35,6 @@ export const waitlistConfirmationTemplate: EmailTemplate = {
                    alt="Veganize-iT Mascot" 
                    style="width: 50px; height: auto; max-width: 50px; display: inline-block;"
                    width="50"
-                   height="50"
               />
             ` : `
               <div style="width: 50px; height: 50px; margin: 0 auto; background-color: ${accentColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
