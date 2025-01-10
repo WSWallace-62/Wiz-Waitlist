@@ -42,7 +42,7 @@ function getInlineLogoImage(): string {
   try {
     const imagePath = path.join(process.cwd(), 'client/public/avo-friend.png');
     const imageBuffer = fs.readFileSync(imagePath);
-    return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+    return imageBuffer.toString('base64');
   } catch (error) {
     console.error('Error reading logo image:', error);
     return ''; // Return empty string if image cannot be read
@@ -73,7 +73,7 @@ export async function sendWaitlistConfirmation(
       fullName,
       customizations: {
         ...customizations,
-        headerImage: inlineImage
+        headerImage: inlineImage ? `data:image/png;base64,${inlineImage}` : undefined
       }
     })
   };
