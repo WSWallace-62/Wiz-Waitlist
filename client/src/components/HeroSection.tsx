@@ -20,7 +20,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Coming Soon
+            Your New Text
           </motion.p>
 
           <motion.h1 
