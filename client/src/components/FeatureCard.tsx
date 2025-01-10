@@ -8,6 +8,9 @@ interface FeatureCardProps {
 }
 
 export default function FeatureCard({ title, description, icon }: FeatureCardProps) {
+  // Split the description by newlines and render each line
+  const descriptionLines = description.split('\n').filter(line => line.trim());
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -23,7 +26,13 @@ export default function FeatureCard({ title, description, icon }: FeatureCardPro
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">{description}</p>
+          <div className="text-muted-foreground">
+            {descriptionLines.map((line, index) => (
+              <p key={index} className={index > 0 ? 'mt-2' : ''}>
+                {line}
+              </p>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </motion.div>
