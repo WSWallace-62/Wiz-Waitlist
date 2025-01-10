@@ -24,7 +24,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
     const newScale = Math.min(Math.max(0.5, scale + delta), 2);
     setScale(newScale);
     if (newScale <= 1) {
-      setPosition({ x: 0, y: 0 }); // Reset position when zooming out to normal
+      setPosition({ x: 0, y: 0 }); 
     }
   };
 
@@ -34,8 +34,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (scale <= 1) return; // Only allow dragging when zoomed in
-    e.preventDefault(); // Prevent image dragging behavior
+    if (scale <= 1) return; 
+    e.preventDefault(); 
     dragRef.current = {
       isDragging: true,
       startX: e.clientX,
@@ -50,9 +50,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
-
-    // Calculate boundaries based on zoom level
-    const maxOffset = (scale - 1) * 150; // Adjust this value based on your needs
+    const maxOffset = (scale - 1) * 150;
 
     const newX = Math.min(Math.max(dragRef.current.startPosX + dx, -maxOffset), maxOffset);
     const newY = Math.min(Math.max(dragRef.current.startPosY + dy, -maxOffset), maxOffset);
@@ -71,7 +69,6 @@ export default function FeatureCard({ title, description, icon, images }: Featur
   const handleOpenChange = (open: boolean) => {
     setShowImage(open);
     if (!open) {
-      // Reset zoom and position when closing the modal
       setScale(1);
       setPosition({ x: 0, y: 0 });
       setCurrentImageIndex(0);
@@ -116,9 +113,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
         <DialogContent
-          className="max-w-2xl [&>button]:hidden" // Hide the default close button
+          className="max-w-2xl [&>button]:hidden" 
         >
-          {/* Logo in top left */}
           <div className="absolute left-4 top-4 z-50">
             <img
               src="/avo-friend.png"
@@ -127,17 +123,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             />
           </div>
 
-          {/* Close button in top right */}
-          <Button
-            className="absolute right-4 top-4 z-50 h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
-            onClick={() => handleOpenChange(false)}
-          >
-            <X className="h-6 w-6" />
-          </Button>
-
-          {/* Thumbnails strip */}
-          <div className="flex justify-center gap-2 mb-4">
-            <div className="flex gap-2 p-1 bg-muted rounded-lg max-w-[240px]">
+          <div className="flex justify-center items-center gap-2 mb-4">
+            <div className="flex gap-2 p-1 bg-muted rounded-lg">
               {images?.map((image, index) => (
                 <div
                   key={index}
@@ -155,10 +142,16 @@ export default function FeatureCard({ title, description, icon, images }: Featur
                 </div>
               ))}
             </div>
+
+            <Button
+              className="h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
+              onClick={() => handleOpenChange(false)}
+            >
+              <X className="h-6 w-6" />
+            </Button>
           </div>
 
           <div className="flex gap-4">
-            {/* Zoom controls */}
             <div className="flex flex-col gap-2">
               <Button
                 variant="outline"
@@ -186,13 +179,12 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               </Button>
             </div>
 
-            {/* Full-size image */}
             <div
               className="flex-1 relative overflow-hidden"
               style={{
                 cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default',
                 aspectRatio: '3/4',
-                maxHeight: 'calc(80vh - 140px)' // Limit height on desktop while maintaining aspect ratio
+                maxHeight: 'calc(80vh - 140px)' 
               }}
             >
               <div
