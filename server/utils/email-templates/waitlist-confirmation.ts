@@ -33,8 +33,7 @@ export const waitlistConfirmationTemplate: EmailTemplate = {
             ${headerImage ? `
               <img src="${headerImage}" 
                    alt="Veganize-iT Mascot" 
-                   style="width: 100px; height: auto;"
-                   onerror="this.style.display='none'"
+                   style="width: 100px; height: 100px; object-fit: contain;"
               />
             ` : `
               <div style="width: 100px; height: 100px; margin: 0 auto; background-color: ${accentColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">

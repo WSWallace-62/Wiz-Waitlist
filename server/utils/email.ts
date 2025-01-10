@@ -1,6 +1,8 @@
 import sgMail from '@sendgrid/mail';
 import { waitlistConfirmationTemplate } from './email-templates/waitlist-confirmation.js';
 import type { EmailConfig, WaitlistEmailCustomizations } from './types.js';
+import fs from 'fs';
+import path from 'path';
 
 let emailEnabled = false;
 
@@ -36,6 +38,17 @@ async function initializeSendGrid(retries = 3) {
 // Initialize on startup
 initializeSendGrid();
 
+function getInlineLogoImage(): string {
+  try {
+    const imagePath = path.join(process.cwd(), 'client/public/avo-friend.png');
+    const imageBuffer = fs.readFileSync(imagePath);
+    return `data:image/png;base64,${imageBuffer.toString('base64')}`;
+  } catch (error) {
+    console.error('Error reading logo image:', error);
+    return ''; // Return empty string if image cannot be read
+  }
+}
+
 export async function sendWaitlistConfirmation(
   email: string, 
   fullName: string,
@@ -46,9 +59,8 @@ export async function sendWaitlistConfirmation(
     return;
   }
 
-  // Get the public URL for the application
-  const publicUrl = process.env.PUBLIC_URL || `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`;
-  console.log('Using public URL for email images:', publicUrl);
+  const inlineImage = getInlineLogoImage();
+  console.log('Preparing to send email with inline image');
 
   const msg: EmailConfig = {
     to: email,
@@ -61,7 +73,7 @@ export async function sendWaitlistConfirmation(
       fullName,
       customizations: {
         ...customizations,
-        headerImage: `${publicUrl}/avo-friend.png`
+        headerImage: inlineImage
       }
     })
   };
@@ -72,7 +84,7 @@ export async function sendWaitlistConfirmation(
   while (attempts < maxAttempts) {
     try {
       await sgMail.send(msg);
-      console.log(`Confirmation email sent successfully to ${email} with image URL: ${publicUrl}/avo-friend.png`);
+      console.log(`Confirmation email sent successfully to ${email}`);
       return;
     } catch (error: any) {
       attempts++;
