@@ -16,6 +16,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
   const [showImage, setShowImage] = useState(false);
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const dragRef = useRef({ isDragging: false, startX: 0, startY: 0, startPosX: 0, startPosY: 0 });
   const descriptionLines = description.split('\n').filter(line => line.trim());
 
@@ -69,7 +70,14 @@ export default function FeatureCard({ title, description, icon, images }: Featur
       // Reset zoom and position when closing the modal
       setScale(1);
       setPosition({ x: 0, y: 0 });
+      setCurrentImageIndex(0);
     }
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setCurrentImageIndex(index);
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
   };
 
   return (
@@ -104,6 +112,27 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-4xl">
+          {/* Thumbnails strip */}
+          <div className="flex justify-center gap-2 mb-4 p-2 bg-muted rounded-lg">
+            {images?.map((image, index) => (
+              <div
+                key={index}
+                onClick={() => handleThumbnailClick(index)}
+                className={`
+                  w-16 h-16 rounded-md overflow-hidden cursor-pointer transition-all
+                  ${currentImageIndex === index ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100'}
+                `}
+              >
+                <img
+                  src={image}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Zoom controls */}
           <div className="flex justify-end gap-2 mb-4">
             <Button
               variant="outline"
@@ -122,35 +151,34 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               <ZoomIn className="h-4 w-4" />
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {images?.map((image, index) => (
-              <div 
-                key={index} 
-                className="aspect-video relative overflow-hidden"
-                style={{
-                  cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
-                }}
-              >
-                <div
-                  style={{
-                    transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-                    transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
-                  }}
-                  className="w-full h-full"
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <img
-                    src={image}
-                    alt={`${title} feature preview ${index + 1}`}
-                    className="w-full h-full object-contain"
-                    draggable={false}
-                  />
-                </div>
-              </div>
-            ))}
+
+          {/* Full-size image */}
+          <div 
+            className="aspect-video relative overflow-hidden"
+            style={{
+              cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
+            }}
+          >
+            <div
+              style={{
+                transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+                transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
+              }}
+              className="w-full h-full"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+            >
+              {images && (
+                <img
+                  src={images[currentImageIndex]}
+                  alt={`${title} feature preview ${currentImageIndex + 1}`}
+                  className="w-full h-full object-contain"
+                  draggable={false}
+                />
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>
