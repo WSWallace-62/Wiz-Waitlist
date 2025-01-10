@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface FeatureCardProps {
   title: string;
@@ -15,10 +15,51 @@ interface FeatureCardProps {
 export default function FeatureCard({ title, description, icon, images }: FeatureCardProps) {
   const [showImage, setShowImage] = useState(false);
   const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const dragRef = useRef({ isDragging: false, startX: 0, startY: 0, startPosX: 0, startPosY: 0 });
   const descriptionLines = description.split('\n').filter(line => line.trim());
 
   const handleZoom = (delta: number) => {
-    setScale(prev => Math.min(Math.max(0.5, prev + delta), 2));
+    const newScale = Math.min(Math.max(0.5, scale + delta), 2);
+    setScale(newScale);
+    if (newScale <= 1) {
+      setPosition({ x: 0, y: 0 }); // Reset position when zooming out to normal
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (scale <= 1) return; // Only allow dragging when zoomed in
+    dragRef.current = {
+      isDragging: true,
+      startX: e.clientX,
+      startY: e.clientY,
+      startPosX: position.x,
+      startPosY: position.y
+    };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!dragRef.current.isDragging) return;
+
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+
+    // Calculate boundaries based on zoom level
+    const maxOffset = (scale - 1) * 150; // Adjust this value based on your needs
+
+    const newX = Math.min(Math.max(dragRef.current.startPosX + dx, -maxOffset), maxOffset);
+    const newY = Math.min(Math.max(dragRef.current.startPosY + dy, -maxOffset), maxOffset);
+
+    setPosition({ x: newX, y: newY });
+  };
+
+  const handleMouseUp = () => {
+    dragRef.current.isDragging = false;
+  };
+
+  // Clean up drag state when mouse leaves the window
+  const handleMouseLeave = () => {
+    dragRef.current.isDragging = false;
   };
 
   return (
@@ -76,11 +117,16 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               <div 
                 key={index} 
                 className="aspect-video relative overflow-hidden"
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
               >
                 <div
                   style={{
-                    transform: `scale(${scale})`,
-                    transition: 'transform 0.2s ease-out',
+                    transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+                    transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
+                    cursor: scale > 1 ? 'grab' : 'default',
                   }}
                   className="w-full h-full"
                 >
@@ -88,6 +134,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
                     src={image}
                     alt={`${title} feature preview ${index + 1}`}
                     className="w-full h-full object-contain"
+                    draggable={false}
                   />
                 </div>
               </div>
