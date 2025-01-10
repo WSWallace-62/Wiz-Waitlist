@@ -127,7 +127,15 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             />
           </div>
 
-          {/* Thumbnails strip and close button */}
+          {/* Close button in top right */}
+          <Button
+            className="absolute right-4 top-4 z-50 h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
+            onClick={() => handleOpenChange(false)}
+          >
+            <X className="h-6 w-6" />
+          </Button>
+
+          {/* Thumbnails strip */}
           <div className="flex justify-center gap-2 mb-4">
             <div className="flex gap-2 p-1 bg-muted rounded-lg max-w-[240px]">
               {images?.map((image, index) => (
@@ -147,12 +155,6 @@ export default function FeatureCard({ title, description, icon, images }: Featur
                 </div>
               ))}
             </div>
-            <Button
-              className="h-8 w-8 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white"
-              onClick={() => handleOpenChange(false)}
-            >
-              <X className="h-6 w-6" />
-            </Button>
           </div>
 
           <div className="flex gap-4">
