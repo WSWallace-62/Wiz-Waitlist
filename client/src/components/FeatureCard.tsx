@@ -144,7 +144,8 @@ export default function FeatureCard({ title, description, icon, images }: Featur
             </div>
 
             <Button
-              className="px-4 h-8 rounded-md bg-red-500 hover:bg-red-600 text-white"
+              className="px-4 h-8 rounded-md"
+              variant="outline"
               onClick={() => handleOpenChange(false)}
             >
               Close
