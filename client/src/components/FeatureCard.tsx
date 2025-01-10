@@ -29,6 +29,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scale <= 1) return; // Only allow dragging when zoomed in
+    e.preventDefault(); // Prevent image dragging behavior
     dragRef.current = {
       isDragging: true,
       startX: e.clientX,
@@ -126,18 +127,20 @@ export default function FeatureCard({ title, description, icon, images }: Featur
               <div 
                 key={index} 
                 className="aspect-video relative overflow-hidden"
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseLeave}
+                style={{
+                  cursor: scale > 1 ? (dragRef.current.isDragging ? 'grabbing' : 'grab') : 'default'
+                }}
               >
                 <div
                   style={{
                     transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
                     transition: scale === 1 ? 'transform 0.2s ease-out' : 'none',
-                    cursor: scale > 1 ? 'grab' : 'default',
                   }}
                   className="w-full h-full"
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <img
                     src={image}
