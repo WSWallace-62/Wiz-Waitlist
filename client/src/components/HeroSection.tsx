@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import WaitlistForm from "./WaitlistForm";
 
@@ -20,7 +21,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Your New Text
+            Testing Edit
           </motion.p>
 
           <motion.h1 
@@ -29,9 +30,9 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Your New Text Here
-            <span className="text-primary block sm:inline"> Highlighted Text </span>
-            Goes Here
+            Transform Any Recipe Into a 
+            <span className="text-primary block sm:inline"> Plant-Based </span>
+            Delight
           </motion.h1>
 
           <motion.p 
