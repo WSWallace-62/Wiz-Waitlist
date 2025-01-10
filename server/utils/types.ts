@@ -11,6 +11,13 @@ export interface EmailConfig {
   };
   subject: string;
   html: string;
+  attachments?: Array<{
+    content: string;
+    filename: string;
+    type: string;
+    disposition: string;
+    content_id: string;
+  }>;
 }
 
 export interface WaitlistEmailCustomizations {

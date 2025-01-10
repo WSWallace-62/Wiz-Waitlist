@@ -73,9 +73,18 @@ export async function sendWaitlistConfirmation(
       fullName,
       customizations: {
         ...customizations,
-        headerImage: inlineImage ? `data:image/png;base64,${inlineImage}` : undefined
+        headerImage: 'cid:avo-friend'
       }
-    })
+    }),
+    attachments: [
+      {
+        content: inlineImage,
+        filename: 'avo-friend.png',
+        type: 'image/png',
+        disposition: 'inline',
+        content_id: 'avo-friend'
+      }
+    ]
   };
 
   let attempts = 0;
