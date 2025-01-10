@@ -29,9 +29,9 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Transform Any Recipe Into a 
-            <span className="text-primary block sm:inline"> Plant-Based </span>
-            Delight
+            Your New Text Here
+            <span className="text-primary block sm:inline"> Highlighted Text </span>
+            Goes Here
           </motion.h1>
 
           <motion.p 
