@@ -122,7 +122,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
           </Button>
 
           {/* Thumbnails strip */}
-          <div className="flex justify-center gap-2 mb-4 p-2 bg-muted rounded-lg">
+          <div className="flex justify-center gap-2 mb-2 p-1 bg-muted rounded-lg max-w-[240px] mx-auto">
             {images?.map((image, index) => (
               <div
                 key={index}
