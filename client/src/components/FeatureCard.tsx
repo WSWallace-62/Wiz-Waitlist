@@ -62,6 +62,15 @@ export default function FeatureCard({ title, description, icon, images }: Featur
     dragRef.current.isDragging = false;
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setShowImage(open);
+    if (!open) {
+      // Reset zoom and position when closing the modal
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -92,7 +101,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
         </Card>
       </motion.div>
 
-      <Dialog open={showImage} onOpenChange={setShowImage}>
+      <Dialog open={showImage} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-4xl">
           <div className="flex justify-end gap-2 mb-4">
             <Button
