@@ -115,7 +115,7 @@ export default function FeatureCard({ title, description, icon, images }: Featur
       </motion.div>
 
       <Dialog open={showImage} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl" closeButton={false}>
           {/* Close button */}
           <Button 
             className="absolute right-4 top-4 h-8 w-8 rounded-full p-0 hover:bg-accent"
