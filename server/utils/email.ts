@@ -11,15 +11,19 @@ async function initializeSendGrid(retries = 3) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_VERIFIED_EMAIL) {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const verifiedEmail = process.env.SENDGRID_VERIFIED_EMAIL.trim();
+        console.log('Attempting to initialize SendGrid with email:', verifiedEmail);
+
         // Validate the email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(process.env.SENDGRID_VERIFIED_EMAIL)) {
-          console.error('SENDGRID_VERIFIED_EMAIL is not in a valid email format');
+        if (!emailRegex.test(verifiedEmail)) {
+          console.error('SENDGRID_VERIFIED_EMAIL is not in a valid email format:', verifiedEmail);
           return false;
         }
+
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         emailEnabled = true;
-        console.log('SendGrid initialized successfully with verified email:', process.env.SENDGRID_VERIFIED_EMAIL);
+        console.log('SendGrid initialized successfully with verified email:', verifiedEmail);
         return true;
       } else {
         console.log('SendGrid credentials not set - email notifications disabled');
@@ -60,7 +64,7 @@ function getInlineLogoImage(): string {
 }
 
 export async function sendWaitlistConfirmation(
-  email: string, 
+  email: string,
   fullName: string,
   customizations?: WaitlistEmailCustomizations
 ) {
@@ -74,17 +78,22 @@ export async function sendWaitlistConfirmation(
     return { sent: false, reason: 'Missing verified sender email' };
   }
 
+  const verifiedEmail = process.env.SENDGRID_VERIFIED_EMAIL.trim();
   const inlineImage = getInlineLogoImage();
-  console.log('Preparing to send email with inline image');
-  console.log('Using verified sender email:', process.env.SENDGRID_VERIFIED_EMAIL);
 
-  const msg: EmailConfig = {
-    to: { 
-      email: email,
+  console.log('Preparing to send email with parameters:', {
+    to: email,
+    from: verifiedEmail,
+    hasImage: !!inlineImage
+  });
+
+  const msg = {
+    to: {
+      email: email.trim(),
       name: fullName
     },
     from: {
-      email: process.env.SENDGRID_VERIFIED_EMAIL,
+      email: verifiedEmail,
       name: 'The Vegan Wiz'
     },
     subject: waitlistConfirmationTemplate.subject,
@@ -95,15 +104,13 @@ export async function sendWaitlistConfirmation(
         headerImage: 'cid:avo-friend'
       }
     }),
-    attachments: [
-      {
-        content: inlineImage,
-        filename: 'avo-friend.png',
-        type: 'image/png',
-        disposition: 'inline',
-        content_id: 'avo-friend'
-      }
-    ]
+    attachments: [{
+      content: inlineImage,
+      filename: 'avo-friend.png',
+      type: 'image/png',
+      disposition: 'inline',
+      content_id: 'avo-friend'
+    }]
   };
 
   let attempts = 0;
@@ -113,7 +120,8 @@ export async function sendWaitlistConfirmation(
     try {
       const response = await sgMail.send(msg);
       console.log(`Confirmation email sent successfully to ${email}`, {
-        response: response[0].statusCode
+        statusCode: response[0].statusCode,
+        headers: response[0].headers
       });
       return { sent: true };
     } catch (error: any) {
@@ -122,14 +130,13 @@ export async function sendWaitlistConfirmation(
         message: error.message,
         errors: error.response?.body?.errors,
         code: error.code,
-        statusCode: error.code,
         response: error.response?.body
       });
 
       if (attempts === maxAttempts) {
-        return { 
-          sent: false, 
-          reason: error.response?.body?.errors?.[0]?.message || error.message 
+        return {
+          sent: false,
+          reason: error.response?.body?.errors?.[0]?.message || error.message
         };
       }
 
