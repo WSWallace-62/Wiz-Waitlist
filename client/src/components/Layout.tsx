@@ -14,10 +14,10 @@ export default function Layout({ children }: LayoutProps) {
             <a className="flex items-center gap-2">
               <img 
                 src="/avo-friend.png" 
-                alt="Veganize-iT Mascot" 
+                alt="Plant Based World Mascot" 
                 className="w-12 h-12 object-contain"
               />
-              <span className="text-xl font-bold text-primary">Veganize-iT</span>
+              <span className="text-xl font-bold text-primary">Plant Based World</span>
             </a>
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
