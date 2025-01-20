@@ -45,7 +45,7 @@ const updateCredentialsSchema = z.object({
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
   const sessionSettings: session.SessionOptions = {
-    secret: process.env.REPL_ID || "veganize-it-secret",
+    secret: process.env.REPL_ID || 'the-vegan-wiz-secret',
     resave: false,
     saveUninitialized: false,
     cookie: {},
@@ -154,7 +154,6 @@ export function setupAuth(app: Express) {
     res.status(401).send("Not logged in");
   });
 
-  // Update admin credentials
   app.put("/api/admin/credentials", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).send("Authentication required");
@@ -218,7 +217,6 @@ export function setupAuth(app: Express) {
       res.status(500).send("Server error");
     }
   });
-
   // Protect the waitlist API with authentication
   app.use("/api/waitlist", (req, res, next) => {
     if (req.method === "GET" || req.method === "DELETE") {
