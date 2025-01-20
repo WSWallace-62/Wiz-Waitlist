@@ -6,7 +6,7 @@ export default function Home() {
   const features = [
     {
       title: "Recipe Conversion",
-      description: "The Vegan Wizard can conjure and inspire amazing plant based recipes:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
+      description: "The Vegan Wiz can conjure and inspire amazing plant based recipes:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
       icon: "🥗",
       images: ["/recipe-wizard.png", "/brisket-recipe.png"]
     },
