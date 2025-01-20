@@ -10,13 +10,23 @@ let emailEnabled = false;
 async function initializeSendGrid(retries = 3) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      if (process.env.SENDGRID_API_KEY) {
+      if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_VERIFIED_EMAIL) {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        // Validate the email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(process.env.SENDGRID_VERIFIED_EMAIL)) {
+          console.error('SENDGRID_VERIFIED_EMAIL is not in a valid email format');
+          return false;
+        }
         emailEnabled = true;
-        console.log('SendGrid initialized successfully');
+        console.log('SendGrid initialized successfully with verified email:', process.env.SENDGRID_VERIFIED_EMAIL);
         return true;
       } else {
-        console.log('SENDGRID_API_KEY not set - email notifications disabled');
+        console.log('SendGrid credentials not set - email notifications disabled');
+        console.log('Missing:', {
+          apiKey: !process.env.SENDGRID_API_KEY ? 'SENDGRID_API_KEY' : undefined,
+          verifiedEmail: !process.env.SENDGRID_VERIFIED_EMAIL ? 'SENDGRID_VERIFIED_EMAIL' : undefined
+        });
         return false;
       }
     } catch (error: any) {
@@ -56,19 +66,23 @@ export async function sendWaitlistConfirmation(
 ) {
   if (!emailEnabled) {
     console.log(`Email notifications disabled - skipping confirmation email to ${email}`);
-    return;
+    return { sent: false, reason: 'Email service not enabled' };
   }
 
   if (!process.env.SENDGRID_VERIFIED_EMAIL) {
     console.error('SENDGRID_VERIFIED_EMAIL not set - cannot send email');
-    throw new Error('SendGrid verified email not configured');
+    return { sent: false, reason: 'Missing verified sender email' };
   }
 
   const inlineImage = getInlineLogoImage();
   console.log('Preparing to send email with inline image');
+  console.log('Using verified sender email:', process.env.SENDGRID_VERIFIED_EMAIL);
 
   const msg: EmailConfig = {
-    to: email,
+    to: { 
+      email: email,
+      name: fullName
+    },
     from: {
       email: process.env.SENDGRID_VERIFIED_EMAIL,
       name: 'The Vegan Wiz'
@@ -97,9 +111,11 @@ export async function sendWaitlistConfirmation(
 
   while (attempts < maxAttempts) {
     try {
-      await sgMail.send(msg);
-      console.log(`Confirmation email sent successfully to ${email}`);
-      return;
+      const response = await sgMail.send(msg);
+      console.log(`Confirmation email sent successfully to ${email}`, {
+        response: response[0].statusCode
+      });
+      return { sent: true };
     } catch (error: any) {
       attempts++;
       console.error(`Error sending confirmation email (attempt ${attempts}/${maxAttempts}):`, {
@@ -111,10 +127,15 @@ export async function sendWaitlistConfirmation(
       });
 
       if (attempts === maxAttempts) {
-        throw error;
+        return { 
+          sent: false, 
+          reason: error.response?.body?.errors?.[0]?.message || error.message 
+        };
       }
 
       await new Promise(resolve => setTimeout(resolve, Math.min(1000 * Math.pow(2, attempts), 10000)));
     }
   }
+
+  return { sent: false, reason: 'Maximum retry attempts reached' };
 }
