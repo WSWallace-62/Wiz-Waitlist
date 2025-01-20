@@ -65,8 +65,8 @@ export async function sendWaitlistConfirmation(
   const msg: EmailConfig = {
     to: email,
     from: {
-      email: 'admin@plant-based-world.com',
-      name: 'Plant Based World'
+      email: 'admin@the-vegan-wiz.com',
+      name: 'The Vegan Wiz'
     },
     subject: waitlistConfirmationTemplate.subject,
     html: waitlistConfirmationTemplate.generateHTML({
