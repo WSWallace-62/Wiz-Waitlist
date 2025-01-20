@@ -59,13 +59,18 @@ export async function sendWaitlistConfirmation(
     return;
   }
 
+  if (!process.env.SENDGRID_VERIFIED_EMAIL) {
+    console.error('SENDGRID_VERIFIED_EMAIL not set - cannot send email');
+    throw new Error('SendGrid verified email not configured');
+  }
+
   const inlineImage = getInlineLogoImage();
   console.log('Preparing to send email with inline image');
 
   const msg: EmailConfig = {
     to: email,
     from: {
-      email: 'admin@the-vegan-wiz.com',
+      email: process.env.SENDGRID_VERIFIED_EMAIL,
       name: 'The Vegan Wiz'
     },
     subject: waitlistConfirmationTemplate.subject,
