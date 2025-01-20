@@ -6,7 +6,7 @@ export default function Home() {
   const features = [
     {
       title: "Recipe Conversion",
-      description: "Transform any recipe into a delicious vegan alternative with smart ingredient substitutions, using:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
+      description: "Transform any recipe into a delicious plant-based alternative with smart ingredient substitutions, using:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
       icon: "🥗",
       images: ["/recipe-wizard.png", "/brisket-recipe.png"]
     },
@@ -51,7 +51,7 @@ export default function Home() {
       <section className="container px-4 py-8 md:py-16">
         <h2 className="text-3xl font-bold text-center mb-4">Transform Your Cooking</h2>
         <p className="text-muted-foreground text-center mb-8 md:mb-12 max-w-2xl mx-auto">
-          Veganize-iT makes it easy to convert any recipe into a delicious plant-based version while maintaining the flavors you love.
+          Plant Based World makes it easy to convert any recipe into a delicious plant-based version while maintaining the flavors you love.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

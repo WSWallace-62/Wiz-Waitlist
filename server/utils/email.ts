@@ -45,7 +45,7 @@ function getInlineLogoImage(): string {
     return imageBuffer.toString('base64');
   } catch (error) {
     console.error('Error reading logo image:', error);
-    return ''; // Return empty string if image cannot be read
+    return '';
   }
 }
 
@@ -66,7 +66,7 @@ export async function sendWaitlistConfirmation(
     to: email,
     from: {
       email: 'admin@plant-based-world.com',
-      name: 'Veganize-iT'
+      name: 'Plant Based World'
     },
     subject: waitlistConfirmationTemplate.subject,
     html: waitlistConfirmationTemplate.generateHTML({
