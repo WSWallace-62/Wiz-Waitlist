@@ -4,28 +4,20 @@ import type { EmailConfig, WaitlistEmailCustomizations } from './types.js';
 import fs from 'fs';
 import path from 'path';
 
+// Track initialization state
 let emailEnabled = false;
+let lastInitializationError: string | null = null;
 
 // Initialize SendGrid with retry
 async function initializeSendGrid(retries = 3) {
+  // Reset state
+  emailEnabled = false;
+  lastInitializationError = null;
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_VERIFIED_EMAIL) {
-        const verifiedEmail = process.env.SENDGRID_VERIFIED_EMAIL.trim();
-        console.log('Attempting to initialize SendGrid with email:', verifiedEmail);
-
-        // Validate the email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(verifiedEmail)) {
-          console.error('SENDGRID_VERIFIED_EMAIL is not in a valid email format:', verifiedEmail);
-          return false;
-        }
-
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        emailEnabled = true;
-        console.log('SendGrid initialized successfully with verified email:', verifiedEmail);
-        return true;
-      } else {
+      if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_VERIFIED_EMAIL) {
+        lastInitializationError = 'Missing required SendGrid credentials';
         console.log('SendGrid credentials not set - email notifications disabled');
         console.log('Missing:', {
           apiKey: !process.env.SENDGRID_API_KEY ? 'SENDGRID_API_KEY' : undefined,
@@ -33,16 +25,36 @@ async function initializeSendGrid(retries = 3) {
         });
         return false;
       }
+
+      const verifiedEmail = process.env.SENDGRID_VERIFIED_EMAIL.trim();
+      console.log('Attempting to initialize SendGrid with email:', verifiedEmail);
+
+      // Validate the email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(verifiedEmail)) {
+        lastInitializationError = `Invalid email format: ${verifiedEmail}`;
+        console.error('SENDGRID_VERIFIED_EMAIL is not in a valid email format:', verifiedEmail);
+        return false;
+      }
+
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      emailEnabled = true;
+      lastInitializationError = null;
+      console.log('SendGrid initialized successfully with verified email:', verifiedEmail);
+      return true;
     } catch (error: any) {
+      lastInitializationError = error.message;
       console.error(`Error initializing SendGrid (attempt ${attempt}/${retries}):`, {
         message: error.message,
         errors: error.response?.body?.errors,
         code: error.code
       });
+
       if (attempt === retries) {
         console.log('Email notifications will be disabled');
         return false;
       }
+
       await new Promise(resolve => setTimeout(resolve, Math.min(1000 * Math.pow(2, attempt), 10000)));
     }
   }
@@ -68,9 +80,11 @@ export async function sendWaitlistConfirmation(
   fullName: string,
   customizations?: WaitlistEmailCustomizations
 ) {
+  // Check email service state
   if (!emailEnabled) {
-    console.log(`Email notifications disabled - skipping confirmation email to ${email}`);
-    return { sent: false, reason: 'Email service not enabled' };
+    const reason = lastInitializationError || 'Email service not enabled';
+    console.log(`Email notifications disabled - skipping confirmation email to ${email} (Reason: ${reason})`);
+    return { sent: false, reason };
   }
 
   if (!process.env.SENDGRID_VERIFIED_EMAIL) {
