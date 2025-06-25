@@ -70,7 +70,7 @@ export default function Home() {
       <footer className="bg-muted py-6 md:py-12 mt-10 md:mt-20">
         <div className="container px-4">
           <p className="text-center text-muted-foreground">
-            2025 Plant. Plant-Based-World.com
+            2025 Plant-Based-World.com
           </p>
         </div>
       </footer>
