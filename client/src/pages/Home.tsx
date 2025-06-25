@@ -1,9 +1,11 @@
 import HeroSection from "@/components/HeroSection";
 import FeatureCard from "@/components/FeatureCard";
 import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Home() {
-  const features = [
+  // Hidden features for future use
+  const hiddenFeatures = [
     {
       title: "Recipe Conversion",
       description: "The Wiz can conjure and inspire amazing plant based recipes:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
@@ -54,16 +56,16 @@ export default function Home() {
           The Wiz makes it easy to convert any recipe into a delicious plant-based version while maintaining the flavors you love.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <FeatureCard 
-              key={index}
-              title={feature.title}
-              description={feature.description}
-              icon={feature.icon}
-              images={feature.images}
-            />
-          ))}
+        {/* Single window for custom link */}
+        <div className="max-w-4xl mx-auto">
+          <Card className="p-8 text-center">
+            <CardContent className="space-y-4">
+              <h3 className="text-2xl font-semibold">Coming Soon</h3>
+              <p className="text-muted-foreground">
+                Please provide the link you'd like to display in this section.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
