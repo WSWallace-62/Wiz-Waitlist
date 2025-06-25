@@ -134,7 +134,7 @@ export default function WaitlistForm() {
                 className="w-full sm:w-auto transition-colors duration-200"
                 disabled={mutation.isPending}
               >
-                Join Waitlist
+                Join the Waitlist
               </Button>
             </motion.div>
           )}
