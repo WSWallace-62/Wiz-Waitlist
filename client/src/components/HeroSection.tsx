@@ -29,7 +29,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            The Vegan Wiz can conjure and inspire amazing 
+            The Wiz can conjure and inspire amazing 
             <span className="text-primary block sm:inline"> plant based </span>
             recipes
           </motion.h1>
@@ -40,7 +40,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="text-red-600">Join the waitlist</span> for The Vegan Wiz, the smart recipe converter that makes plant-based cooking easy, 
+            <span className="text-red-600">Join the waitlist</span> for The Wiz, the smart recipe converter that makes plant-based cooking easy, 
             delicious, and perfectly tailored to your preferences.
           </motion.p>
 

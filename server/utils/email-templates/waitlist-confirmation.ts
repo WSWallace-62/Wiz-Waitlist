@@ -1,7 +1,7 @@
 import type { EmailTemplate, WaitlistEmailCustomizations } from '../types.js';
 
 export const waitlistConfirmationTemplate: EmailTemplate = {
-  subject: 'Welcome to The Vegan Wiz! 🌱',
+  subject: 'Welcome to The Wiz! 🌱',
   generateHTML: (data: { fullName: string; customizations?: WaitlistEmailCustomizations }) => {
     const {
       fullName,
@@ -16,7 +16,7 @@ export const waitlistConfirmationTemplate: EmailTemplate = {
         'Customize recipes based on your dietary preferences and restrictions',
         'Get personalized nutrition tracking and recommendations'
       ],
-      footerText = 'If you didn\'t sign up for The Vegan Wiz, please ignore this email.'
+      footerText = 'If you didn\'t sign up for The Wiz, please ignore this email.'
     } = customizations;
 
     return `
@@ -25,7 +25,7 @@ export const waitlistConfirmationTemplate: EmailTemplate = {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to The Vegan Wiz</title>
+        <title>Welcome to The Wiz</title>
       </head>
       <body style="margin: 0; padding: 0; background-color: #f4f4f4;">
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -47,7 +47,7 @@ export const waitlistConfirmationTemplate: EmailTemplate = {
 
           <p style="color: #333333; font-size: 16px;">Hi ${fullName},</p>
 
-          <p style="color: #333333; font-size: 16px;">Thank you for joining the waitlist for The Vegan Wiz! We're thrilled to have you as part of our growing community of plant-based food enthusiasts.</p>
+          <p style="color: #333333; font-size: 16px;">Thank you for joining the waitlist for The Wiz! We're thrilled to have you as part of our growing community of plant-based food enthusiasts.</p>
 
           <div style="background-color: ${accentColor}15; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="color: #333333; font-size: 16px; margin-bottom: 10px;">You'll be among the first to know when we launch our innovative recipe conversion platform that will help you:</p>

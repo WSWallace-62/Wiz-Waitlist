@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
                 alt="The Vegan Wiz Mascot" 
                 className="w-12 h-12 object-contain"
               />
-              <span className="text-xl font-bold text-primary">The Vegan Wiz</span>
+              <span className="text-xl font-bold text-primary">The Wiz</span>
             </a>
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
