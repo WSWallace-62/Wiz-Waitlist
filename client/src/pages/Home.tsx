@@ -60,10 +60,18 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <Card className="p-8 text-center">
             <CardContent className="space-y-4">
-              <h3 className="text-2xl font-semibold">Coming Soon</h3>
-              <p className="text-muted-foreground">
-                Please provide the link you'd like to display in this section.
+              <h3 className="text-2xl font-semibold">Try The Vegan Wiz</h3>
+              <p className="text-muted-foreground mb-6">
+                Experience our recipe conversion tool and join our community of plant-based cooking enthusiasts.
               </p>
+              <a 
+                href="https://veganize-i-t-waitlist-scottwallace8.replit.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+              >
+                Visit The Vegan Wiz
+              </a>
             </CardContent>
           </Card>
         </div>
