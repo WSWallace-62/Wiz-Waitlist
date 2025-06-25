@@ -62,7 +62,7 @@ export default function Home() {
             <CardContent className="space-y-4">
               <h3 className="text-2xl font-semibold">Try The Wiz</h3>
               <p className="text-muted-foreground mb-6">
-                Experience our recipe conversion tool and join our community of plant-based cooking enthusiasts.
+                Experience our customized features and join our community of plant-based cooking enthusiasts.
               </p>
               <a 
                 href="https://wswallace-62.github.io/wiz-gallery/scrollable_screenshot_gallery.html" 
