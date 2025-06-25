@@ -65,7 +65,7 @@ export default function Home() {
                 Experience our recipe conversion tool and join our community of plant-based cooking enthusiasts.
               </p>
               <a 
-                href="https://veganize-i-t-waitlist-scottwallace8.replit.app/" 
+                href="https://wswallace-62.github.io/wiz-gallery/scrollable_screenshot_gallery.html" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
