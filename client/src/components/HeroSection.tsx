@@ -43,7 +43,7 @@ export default function HeroSection() {
 
             <span className="text-red-600">Join the waitlist</span> for The Wiz, the smart recipe converter & creator that makes plant-based cooking easy, 
             delicious, and perfectly tailored to your preferences. <br /> <br />
-            We'll notify you when we launch!
+            We'll notify you when we launch.
           </motion.p>
 
 
