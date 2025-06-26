@@ -53,7 +53,7 @@ export default function Home() {
       <section className="container px-4 py-8 md:py-16">
         <h2 className="text-3xl font-bold text-center mb-4">Transform Your Cooking</h2>
         <p className="text-muted-foreground text-center mb-8 md:mb-12 max-w-2xl mx-auto">
-          The Wiz makes it easy to convert any recipe into a delicious plant-based version while maintaining the flavors you love.
+          The Wiz makes it easy to convert or create any recipe into a delicious plant-based version while maintaining the flavors you love.
         </p>
 
         {/* Single window for custom link */}
