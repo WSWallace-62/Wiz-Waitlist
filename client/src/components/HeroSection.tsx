@@ -40,10 +40,8 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="text-red-600">Join the waitlist</span> for The Wiz, the smart recipe converter that makes plant-based cooking easy, 
-            delicious, and perfectly tailored to your preferences.
-          </motion.p>
-
+            <span className="text-red-600">Join the waitlist</span> for The Wiz, the smart recipe converter and creator that makes plant-based cooking easy, 
+            delicious, and perfectly tailored to your preferences.  1234567890
           <motion.div 
             className="mt-8 sm:mt-12"
             initial={{ opacity: 0, y: 20 }}
