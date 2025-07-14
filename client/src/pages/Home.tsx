@@ -8,40 +8,46 @@ export default function Home() {
   const hiddenFeatures = [
     {
       title: "Recipe Conversion",
-      description: "The Wiz can conjure and inspire amazing plant based recipes:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
+      description:
+        "The Wiz can conjure and inspire amazing plant based recipes:\n\n• An image of your favourite family recipe.\n• Typing in the kind if recipe that you are interested in.\n• Using a built in example recipe.",
       icon: "🥗",
-      images: ["/recipe-wizard.png", "/brisket-recipe.png"]
+      images: ["/recipe-wizard.png", "/brisket-recipe.png"],
     },
     {
       title: "Dietary Preferences",
-      description: "Customize recipes based on allergies, restrictions, and preferences like keto or low-sodium.",
+      description:
+        "Customize recipes based on allergies, restrictions, and preferences like keto or low-sodium.",
       icon: "🍽️",
-      images: ["/features/dietary-preferences.png"]
+      images: ["/features/dietary-preferences.png"],
     },
     {
       title: "Unit Flexibility",
-      description: "Switch between metric and imperial measurements seamlessly for temperature, weight, and volume.",
+      description:
+        "Switch between metric and imperial measurements seamlessly for temperature, weight, and volume.",
       icon: "⚖️",
-      images: ["/features/unit-flexibility.png"]
+      images: ["/features/unit-flexibility.png"],
     },
     {
       title: "Smart Appliance Integration",
-      description: "Adapt recipes to work with the cooking appliances you have at home.",
+      description:
+        "Adapt recipes to work with the cooking appliances you have at home.",
       icon: "🔧",
-      images: ["/features/smart-appliance.png"]
+      images: ["/features/smart-appliance.png"],
     },
     {
       title: "Nutrition Tracking",
-      description: "Monitor nutritional content and adjust recipes to meet your health goals.",
+      description:
+        "Monitor nutritional content and adjust recipes to meet your health goals.",
       icon: "📊",
-      images: ["/features/nutrition-tracking.png"]
+      images: ["/features/nutrition-tracking.png"],
     },
     {
       title: "Personalized Experience",
-      description: "Get recommendations based on your cooking style and dietary preferences.",
+      description:
+        "Get recommendations based on your cooking style and dietary preferences.",
       icon: "👤",
-      images: ["/features/personalized-experience.png"]
-    }
+      images: ["/features/personalized-experience.png"],
+    },
   ];
 
   return (
@@ -51,9 +57,12 @@ export default function Home() {
       <Separator className="my-6 md:my-12" />
 
       <section className="container px-4 py-8 md:py-16">
-        <h2 className="text-3xl font-bold text-center mb-4">Transform Your Cooking</h2>
+        <h2 className="text-3xl font-bold text-center mb-4">
+          Transform Your Cooking
+        </h2>
         <p className="text-muted-foreground text-center mb-8 md:mb-12 max-w-2xl mx-auto">
-          The Wiz makes it easy to convert or create any recipe into a delicious plant-based version while maintaining the flavors you love.
+          The Wiz makes it easy to convert or create any recipe into a delicious
+          plant-based version while maintaining the flavors you love.
         </p>
 
         {/* Single window for custom link */}
@@ -62,15 +71,16 @@ export default function Home() {
             <CardContent className="space-y-4">
               <h3 className="text-2xl font-semibold">Preview The Wiz</h3>
               <p className="text-muted-foreground mb-6">
-                Experience our customized features and join our community of plant-based cooking enthusiasts.
+                Experience our customized features and join our community of
+                plant-based cooking enthusiasts.
               </p>
-              <a 
-                href="https://wswallace-62.github.io/wiz-gallery/scrollable_screenshot_gallery.html" 
-                target="_blank" 
+              <a
+                href="https://wswallace-62.github.io/wiz-gallery/index.html"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >
-                Check out some of the features 
+                Check out some of the features
               </a>
             </CardContent>
           </Card>
